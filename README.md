@@ -8,8 +8,8 @@ A configurable, scalable web scraping framework built with Scrapy for extracting
 ```
 ci.hls/
 │
-├── spiders/            # Core scraping logic
-├── middleware/         # Request/Response processing
+├── spiders/           # Core scraping logic
+├── middleware/        # Request/Response processing
 ├── trackers/          # URL deduplication
 ├── extractors/        # Field extraction logic
 ├── storage/           # Data persistence
