@@ -1,0 +1,21 @@
+{
+    "PR News": {
+        "type": "catalog",
+        "url": [
+            "https://www.prnewswire.com/news-releases/health-latest-news/health-latest-news-list/"
+        ],
+        "selectors": {
+            "source": "PR_News",
+            "news": "//*[@class='row newsCards']",
+            "abstract": ".//p[@class='remove-outline']/text()",
+            "published_date": ".//div[@class='col-sm-8 col-lg-9 pull-left card']/h3/small/text()",
+            "news_link": ".//a[@class='newsreleaseconsolidatelink display-outline w-100']/@href"
+        },
+        "news_selector": {
+            "title": "//*[@class='row detail-headline']//h1/text()",
+            "article_date": "//p[@class='mb-no']/text()",
+            "author": "//*[@class='col-lg-8 col-md-8 col-sm-7 swaping-class-left']//a//text()",
+            "content": "//*[@class='col-lg-10 col-lg-offset-1']//p//text()"
+        }
+    }
+}
