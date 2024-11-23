@@ -1,4 +1,4 @@
-# Modular Web Scraper
+# CI.HLS
 
 A configurable, scalable web scraping framework built with Scrapy for extracting news articles from multiple sources. The system supports dynamic source configuration, proxy integration, and robust error handling.
 
@@ -6,7 +6,7 @@ A configurable, scalable web scraping framework built with Scrapy for extracting
 
 ### Core Components
 ```
-project_root/
+ci.hls/
 │
 ├── spiders/            # Core scraping logic
 ├── middleware/         # Request/Response processing
