@@ -1,19 +1,16 @@
 # CI.HLS
 
-A configurable, scalable web scraping framework built with Scrapy for extracting news articles from multiple sources. The system supports dynamic source configuration, proxy integration, and robust error handling.
+A configurable web scraping framework built with Scrapy for extracting news articles from multiple sources.
 
-## Architecture Overview
-
-### Core Components
+## Directory Structure
 ```
-ci.hls [root]/
+ci.hls/
 ├── config/
 │   ├── __init__.py
 │   └── selectors/
 │       ├── __init__.py
 │       ├── sources/
-│       │   ├── pr_news.json
-│       │   └── [other_source].json
+│       │   └── pr_news.json
 │       └── selector_manager.py
 ├── spiders/
 │   ├── __init__.py
@@ -21,10 +18,16 @@ ci.hls [root]/
 ├── middleware/
 │   ├── __init__.py
 │   └── scrapingbee.py
-├── trackers/
 ├── extractors/
+│   ├── __init__.py
+│   └── field_extractor.py
 ├── storage/
+│   ├── __init__.py
+│   ├── json_handler.py
+│   └── directory_manager.py
 ├── utils/
+│   ├── __init__.py
+│   └── url_utils.py
 ├── Data/              # Created during runtime
 ├── Tracker/           # Created during runtime
 ├── logs/              # Log files
@@ -34,230 +37,136 @@ ci.hls [root]/
 └── run.py
 ```
 
-### Key Features
-- Source-specific configuration via JSON
-- Modular architecture for easy extension
-- ScrapingBee integration for proxy management
-- Atomic file operations for data integrity
-- Robust error handling and logging
-- URL tracking for deduplication
-- Environment-based configuration
-
-## Technical Prerequisites
-
-### System Requirements
+## Prerequisites
 - Python 3.12+
-- pip/pipenv for dependency management
-- Git for version control
-
-### Dependencies
-```bash
-scrapy>=2.11.0
-python-dotenv>=1.0.0
-pytz>=2024.1
-```
+- pip for dependency management
 
 ## Installation
 
 1. Clone the repository:
 ```bash
 git clone https://github.com/rishic5i/ci.hls.git
-cd modular-scraper
+cd ci.hls
 ```
 
-2. Create virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configure environment:
-```bash
-cp .env.example .env
-# Edit .env with your configurations
-```
-
-## Configuration
-
-### Environment Variables
-```dotenv
-SCRAPINGBEE_API_KEYS=key1,key2,key3
+3. Configure environment:
+Create `.env` file with the following variables:
+```env
+SCRAPINGBEE_API_KEYS=your_key_1,your_key_2
 ROTATION_THRESHOLD=150
-LOG_LEVEL=INFO
-LOG_DIR=logs
-CONCURRENT_REQUESTS=2
-DOWNLOAD_DELAY=2
 ```
 
-### Adding New Sources
-1. Create source configuration in `config/selectors/sources/`:
+## Usage
+
+### List All Available Sources
+```bash
+python run.py --list-sources
+```
+
+### Run All Sources
+```bash
+python run.py
+```
+
+### Run Specific Source
+```bash
+python run.py --source pr_news
+```
+
+### Run with ScrapingBee
+```bash
+# Run all sources with ScrapingBee
+python run.py --use-scrapingbee
+
+# Run specific source with ScrapingBee
+python run.py --source pr_news --use-scrapingbee
+```
+
+### Environment Options
+```bash
+# Development mode (default)
+python run.py --env dev --source pr_news
+
+# Production mode
+python run.py --env prod --source pr_news
+
+# Combine with ScrapingBee
+python run.py --env prod --source pr_news --use-scrapingbee
+```
+
+## Adding New Sources
+
+Add your source configuration in `config/selectors/sources/` (e.g., `your_source.json`):
 ```json
 {
-    "Source_Name": {
+    "Source Name": {
         "type": "catalog",
-        "url": ["https://example.com/news"],
+        "url": [
+            "https://example.com/news-url"
+        ],
         "selectors": {
-            "source": "unique_source_id",
-            "news": "xpath_for_news_items",
-            "news_link": "xpath_for_links"
+            "source": "SOURCE_NAME",
+            "news": "xpath_for_news_list",
+            "abstract": "xpath_for_abstract",
+            "published_date": "xpath_for_date",
+            "news_link": "xpath_for_link"
         },
         "news_selector": {
             "title": "xpath_for_title",
+            "article_date": "xpath_for_article_date",
+            "author": "xpath_for_author",
             "content": "xpath_for_content"
         }
     }
 }
 ```
 
-## Usage
+## Output Structure
 
-### Basic Usage
-```bash
-# Run scraper for all sources
-python run.py
-
-# Run specific source
-python run.py --source source_name
-
-# List available sources
-python run.py --list-sources
-```
-
-### Environment Options
-```bash
-# Development mode
-python run.py --env dev
-
-# Production mode
-python run.py --env prod --use-scrapingbee
-```
-
-## Development Guidelines
-
-### Adding New Features
-1. Create feature branch from main:
-```bash
-git checkout -b feature/feature-name
-```
-
-2. Follow modular structure:
-- Add new extractors in `extractors/`
-- Add new middleware in `middleware/`
-- Add source configs in `config/selectors/sources/`
-
-3. Update tests:
-```bash
-python -m pytest tests/
-```
-
-### Error Handling
-- Use try-except blocks with specific exceptions
-- Log errors with appropriate levels
-- Implement graceful fallbacks
-- Handle network timeouts and retries
-
-### Code Style
-- Follow PEP 8 guidelines
-- Use type hints for function arguments
-- Document complex logic
-- Use meaningful variable names
-
-## Data Structure
-
-### Output Format
-```json
-{
-    "source": "source_name",
-    "category": "news_category",
-    "published_date": "YYYY-MM-DD",
-    "title": "article_title",
-    "content": "article_content",
-    "url": "article_url",
-    "scraping_date": "YYYY-MM-DD",
-    "scraping_time": "HH:MM"
-}
-```
-
-### Storage Pattern
+### Data Storage
 ```
 Data/
 └── DD-MM-YYYY/
     └── source_name.json
 ```
 
-## Error Handling and Logging
-
-### Log Levels
-- DEBUG: Detailed debugging information
-- INFO: General operational information
-- WARNING: Warning messages for non-critical issues
-- ERROR: Error messages for failed operations
-- CRITICAL: Critical errors requiring immediate attention
-
-### Log Files
+### Output Format
+```json
+{
+    "source": "source_name",
+    "category": "category",
+    "published_date": "formatted_date",
+    "article_date": "formatted_date",
+    "title": "article_title",
+    "author": "author_name",
+    "abstract": "article_abstract",
+    "detailed_news": "article_content",
+    "article_url": "url",
+    "attachments": "attachment_url",
+    "contacts": "contact_details",
+    "scraping_date": "YYYY-MM-DD",
+    "scraping_time": "HH:MM"
+}
 ```
-logs/
-├── scraper.log      # General logging
-└── error.log        # Error-specific logging
-```
 
-## Performance Considerations
+## URL Tracking
+- URLs are tracked in `Tracker/source_name_tracker.json`
+- Prevents duplicate scraping of articles
 
-### Optimization
-- Use selector caching
-- Implement request delays
-- Configure concurrent requests
-- Rotate proxy settings
-
-### Memory Management
-- Implement batch processing
-- Use file streaming for large datasets
-- Clear URL trackers periodically
-
-## Monitoring and Maintenance
-
-### Health Checks
-- Monitor log files for errors
-- Track success rates
-- Monitor proxy performance
-- Check data integrity
-
-### Regular Maintenance
-- Update selectors if source HTML changes
-- Rotate API keys
-- Archive old data
-- Clean up tracker files
-
-## Troubleshooting
-
-### Common Issues
-1. Selector failures:
-   - Check source HTML structure
-   - Validate XPath expressions
-   - Review selector configuration
-
-2. Rate limiting:
-   - Adjust DOWNLOAD_DELAY
-   - Rotate proxy settings
-   - Check API quotas
-
-3. Data integrity:
-   - Verify JSON structure
-   - Check file permissions
-   - Validate output format
+## Error Handling
+- Comprehensive error logging in the logs directory
+- Automatic retry for failed requests
+- Proxy rotation with ScrapingBee integration
 
 ## Contributing
-
 1. Fork the repository
-2. Create feature branch
-3. Follow coding standards
-4. Submit pull request
+2. Create your feature branch
+3. Submit pull request
 
 ## License
-
-MIT License - See LICENSE file for details
+MIT
