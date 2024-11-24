@@ -6,17 +6,32 @@ A configurable, scalable web scraping framework built with Scrapy for extracting
 
 ### Core Components
 ```
-ci.hls/
-│
-├── spiders/           # Core scraping logic
-├── middleware/        # Request/Response processing
-├── trackers/          # URL deduplication
-├── extractors/        # Field extraction logic
-├── storage/           # Data persistence
-├── utils/             # Helper utilities
-├── config/            # Configuration management
-│   └── selectors/     # Source-specific configs
-└── Data/              # Output storage
+ci.hls [root]/
+├── config/
+│   ├── __init__.py
+│   └── selectors/
+│       ├── __init__.py
+│       ├── sources/
+│       │   ├── pr_news.json
+│       │   └── [other_source].json
+│       └── selector_manager.py
+├── spiders/
+│   ├── __init__.py
+│   └── dynamic_spider.py
+├── middleware/
+│   ├── __init__.py
+│   └── scrapingbee.py
+├── trackers/
+├── extractors/
+├── storage/
+├── utils/
+├── Data/              # Created during runtime
+├── Tracker/           # Created during runtime
+├── logs/              # Log files
+├── .env               # Environment variables
+├── .gitignore
+├── requirements.txt
+└── run.py
 ```
 
 ### Key Features
