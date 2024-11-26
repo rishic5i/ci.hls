@@ -125,6 +125,15 @@ Add your source configuration in `config/selectors/sources/` (e.g., `your_source
         "url": [
             "https://example.com/news-url"
         ],
+        "headers": {
+            "User-Agent": "Chrome/91.0.4472.124 Safari/537.36",
+            "Accept": "text/html,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Connection": "keep-alive",
+            "Upgrade-Insecure-Requests": "1",
+            "Cache-Control": "max-age=0"
+        },
         "selectors": {
             "source": "SOURCE_NAME",
             "news": "xpath_for_news_list",
