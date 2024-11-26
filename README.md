@@ -2,6 +2,18 @@
 
 A configurable web scraping framework built with Scrapy for extracting news articles from multiple sources.
 
+
+## Key Features
+
+🛠️ Source-specific configuration via JSON
+🧩 Modular architecture for easy extension
+🐝 ScrapingBee integration for proxy management
+📂 Atomic file operations for data integrity
+⚙️ Robust error handling and logging
+🔗 URL tracking for deduplication
+🌍 Environment-based configuration
+✉️ Custom headers support in the config
+
 ## Directory Structure
 ```
 ci.hls/
@@ -57,8 +69,12 @@ pip install -r requirements.txt
 3. Configure environment:
 Create `.env` file with the following variables:
 ```env
-SCRAPINGBEE_API_KEYS=your_key_1,your_key_2
+SCRAPINGBEE_API_KEYS=key1,key2,key3
 ROTATION_THRESHOLD=150
+LOG_LEVEL=INFO
+LOG_DIR=logs
+CONCURRENT_REQUESTS=2
+DOWNLOAD_DELAY=2
 ```
 
 ## Usage
