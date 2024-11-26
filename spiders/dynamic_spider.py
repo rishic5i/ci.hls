@@ -55,6 +55,13 @@ class DynamicSpider(scrapy.Spider):
             logger.error(f"Error initializing spider: {e}")
             raise
 
+    def start_requests(self):
+        """Override start_requests to include headers"""
+        for url in self.start_urls:
+            config = self.get_config(url)
+            headers = config.get('headers', {})
+            yield scrapy.Request(url, headers=headers, dont_filter=True)
+
     def load_url_tracker(self, source_name):
         """Load URL tracker for a source"""
         tracker_file = self.dir_manager.trackers_dir / f"{source_name}_tracker.json"
@@ -106,6 +113,9 @@ class DynamicSpider(scrapy.Spider):
             source = selectors['source']
             category = URLUtils.extract_category(original_url)
 
+            config = self.get_config(original_url)
+            headers = config.get('headers', {})
+
             logger.info(f"Catalog scraped from {original_url}")
 
             for article in news:
@@ -130,6 +140,7 @@ class DynamicSpider(scrapy.Spider):
                 yield response.follow(
                     absolute_url,
                     self.parse_news,
+                    headers=headers,
                     cb_kwargs={
                         'selectors': selectors,
                         'news_selector': news_selector,
