@@ -5,14 +5,14 @@ A configurable web scraping framework built with Scrapy for extracting news arti
 
 ## Key Features
 
-🛠️ Source-specific configuration via JSON
-🧩 Modular architecture for easy extension
-🐝 ScrapingBee integration for proxy management
-📂 Atomic file operations for data integrity
-⚙️ Robust error handling and logging
-🔗 URL tracking for deduplication
-🌍 Environment-based configuration
-✉️ Custom headers support in the config
+- 🛠️ Source-specific configuration via JSON
+- 🧩 Modular architecture for easy extension
+- 🐝 ScrapingBee integration for proxy management
+- 📂 Atomic file operations for data integrity
+- ⚙️ Robust error handling and logging
+- 🔗 URL tracking for deduplication
+- 🌍 Environment-based configuration
+- ✉️ Custom headers support in the config
 
 ## Directory Structure
 ```
